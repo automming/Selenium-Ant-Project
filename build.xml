@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Test" default="run" basedir=".">
+	<property name="src.dir" location="src" />
+	<property name="ant.dir" location="ant" />
+	<property name="build.dir" location="${ant.dir}/build" />
+	<property name="classes.dir" location="${build.dir}/classes" />
+	<property name="jar.dir" location="${build.dir}/jar" />
+	<property name="lib.dir" location="lib" />
+
+	<path id="classpath">
+		<fileset dir="${lib.dir}" includes="**/*.jar" />
+	</path>
+
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+
+	<target name="run" depends="jar">
+		<java classname="com.ant.runner.TestGoogle" fork="true">
+			<classpath>
+				<path refid="classpath" />
+				<path location="${jar.dir}/Test.jar" />
+			</classpath>
+		</java>
+	</target>
+
+	<target name="jar" depends="compile">
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${jar.dir}/Test.jar" basedir="${classes.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="com.ant.runner.TestGoogle" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="compile">
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}" destdir="${classes.dir}"
+			includeantruntime="false" classpathref="classpath" />
+	</target>
+
+</project>
+	
